@@ -1,4 +1,10 @@
-const entries = [];
+const entries = JSON.parse(localStorage.getItem('entries')) || [];
+
+// Render saved entries on load
+entries.forEach((entry) => {
+  appendRow(entry);
+});
+updateTotals();
 
 document.getElementById('add-btn').addEventListener('click', addEntry);
 
@@ -13,6 +19,7 @@ function addEntry() {
 
   const entry = { name, calories, protein, carbs, fat };
   entries.push(entry);
+  localStorage.setItem('entries', JSON.stringify(entries));
   appendRow(entry);
   updateTotals();
   clearInputs();

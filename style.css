@@ -1,7 +1,8 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Figtree', sans-serif;
   margin: 20px;
-  background-color: #f0f0f0;
+  background-color: #f5f7f7;
+  color: rgb(18, 70, 88);
 }
 
 h1 {
@@ -19,7 +20,11 @@ h1 {
   padding: 5px;
 }
 
-#add-btn {
+button {
+  background-color: #fd5b4f;
+  color: #fff;
+  border: none;
+  cursor: pointer;
   padding: 5px 10px;
 }
 
