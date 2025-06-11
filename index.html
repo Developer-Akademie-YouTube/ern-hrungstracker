@@ -6,12 +6,21 @@
   <title>Ernährungstracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Figtree&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
   <h1>Ernährungstracker</h1>
   <div id="login-section">
-    <div id="signin-button"></div>
+    <div id="email-login">
+      <input id="login-email" type="email" placeholder="E-Mail">
+      <input id="login-password" type="password" placeholder="Passwort">
+      <button id="login-btn">Login</button>
+    </div>
+    <div id="email-register">
+      <input id="register-email" type="email" placeholder="E-Mail">
+      <input id="register-password" type="password" placeholder="Passwort">
+      <button id="register-btn">Registrieren</button>
+    </div>
+    <div id="message"></div>
   </div>
   <button id="logout-btn">Logout</button>
   <div class="input-form">
@@ -43,6 +52,10 @@
       </tr>
     </tfoot>
   </table>
+  <footer>
+    <a href="datenschutz.html">Datenschutz</a> |
+    <a href="impressum.html">Impressum</a>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>

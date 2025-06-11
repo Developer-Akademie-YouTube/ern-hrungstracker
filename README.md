@@ -1,15 +1,18 @@
 # Ernährungstracker
 
-Dieses Beispielprojekt speichert alle Daten ausschließlich lokal im Browser. Die Anmeldung erfolgt optional über Google. Dabei werden der Google-Name und die E-Mail-Adresse nur lokal im `localStorage` gespeichert, um die Nutzung des Trackers an den angemeldeten Nutzer zu knüpfen. Es findet keine Übertragung der Daten an einen Server statt.
+Dieses Beispielprojekt ermöglicht nun eine Registrierung per E-Mail und Passwort. Nach der Registrierung wird eine Bestätigungs-E-Mail über einen Test-Mailserver versendet. Erst nach Bestätigung kann man sich anmelden. Die Ernährungsdaten werden anschließend auf dem Server gespeichert.
 
-## Google Sign-In einrichten
-1. Lege in der [Google Cloud Console](https://console.cloud.google.com/) ein OAuth-2.0-Webclient an und trage die URL deines Projektes als zugelassene Ursprungs- und Weiterleitungs-URL ein.
-2. Ersetze in `script.js` den Platzhalter `YOUR_GOOGLE_CLIENT_ID` durch die Client-ID.
-3. Rufe `index.html` in einem kompatiblen Browser auf.
+## Anwendung starten
+1. Installiere die Abhängigkeiten mit `npm install`.
+2. Starte den Server mit `node server.js`.
+3. Öffne `index.html` in einem Browser und registriere dich mit deiner E-Mail-Adresse.
+4. Die Konsole des Servers zeigt einen Link zur Bestätigung der E-Mail an. Rufe diesen auf, um dein Konto zu aktivieren.
+5. Nach der Anmeldung können Ernährungsdaten eingegeben werden.
 
-Nach erfolgreichem Login werden Eingabeformular und Tabelle angezeigt. 
 
 ## Datenschutz
-- Alle Ernährungsdaten werden im Browser gespeichert und nicht über das Internet versendet.
-- Die Anmeldung über Google ist optional und dient nur der Authentifizierung im Browser.
-- Nutzer können sich jederzeit über den Logout-Button abmelden. Dabei werden die im Browser gespeicherten Profildaten gelöscht.
+- Registrierungsdaten (E-Mail und Passwort-Hash) und alle Ernährungsdaten werden in den Dateien `users.json` und `entries.json` auf dem Server gespeichert.
+- Die Bestätigungs-E-Mail wird über einen Nodemailer-Testaccount versendet.
+- Über den Logout-Button kannst du dich jederzeit abmelden und lokale Daten löschen.
+
+Weitere Informationen findest du in unserer [Datenschutzerklärung](datenschutz.html) und im [Impressum](impressum.html).
