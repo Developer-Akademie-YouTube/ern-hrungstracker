@@ -1,14 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ernährungstracker</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-
-    <script src="script.js"></script>
+  <h1>Ernährungstracker</h1>
+  <div class="input-form">
+    <input id="food-name" type="text" placeholder="Lebensmittel">
+    <input id="calories" type="number" placeholder="Kalorien">
+    <input id="protein" type="number" placeholder="Eiweiß (g)">
+    <input id="carbs" type="number" placeholder="Kohlenhydrate (g)">
+    <input id="fat" type="number" placeholder="Fett (g)">
+    <button id="add-btn">Hinzufügen</button>
+  </div>
+  <table id="food-table">
+    <thead>
+      <tr>
+        <th>Lebensmittel</th>
+        <th>Kalorien</th>
+        <th>Eiweiß (g)</th>
+        <th>Kohlenhydrate (g)</th>
+        <th>Fett (g)</th>
+      </tr>
+    </thead>
+    <tbody id="food-body"></tbody>
+    <tfoot>
+      <tr>
+        <th>Summe</th>
+        <th id="total-calories">0</th>
+        <th id="total-protein">0</th>
+        <th id="total-carbs">0</th>
+        <th id="total-fat">0</th>
+      </tr>
+    </tfoot>
+  </table>
+  <script src="script.js"></script>
 </body>
 </html>
