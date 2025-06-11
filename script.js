@@ -1,32 +1,23 @@
-const entries = JSON.parse(localStorage.getItem('entries')) || [];
+let entries = [];
 let user = JSON.parse(localStorage.getItem('user')) || null;
 
-function initApp() {
-  google.accounts.id.initialize({
-    client_id: 'YOUR_GOOGLE_CLIENT_ID',
-    callback: handleCredentialResponse
-  });
-  google.accounts.id.renderButton(
-    document.getElementById('signin-button'),
-    { theme: 'outline', size: 'large' }
-  );
+async function initApp() {
   if (user) {
+    await loadEntries();
     showApp();
   } else {
     hideApp();
   }
-  entries.forEach((entry) => {
-    appendRow(entry);
-  });
-  updateTotals();
 }
 
 window.onload = initApp;
 
 document.getElementById('add-btn').addEventListener('click', addEntry);
 document.getElementById('logout-btn').addEventListener('click', logout);
+document.getElementById('login-btn').addEventListener('click', login);
+document.getElementById('register-btn').addEventListener('click', register);
 
-function addEntry() {
+async function addEntry() {
   const name = document.getElementById('food-name').value.trim();
   const calories = parseFloat(document.getElementById('calories').value) || 0;
   const protein = parseFloat(document.getElementById('protein').value) || 0;
@@ -37,7 +28,11 @@ function addEntry() {
 
   const entry = { name, calories, protein, carbs, fat };
   entries.push(entry);
-  localStorage.setItem('entries', JSON.stringify(entries));
+  await fetch('/entries', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: user.id, entry })
+  });
   appendRow(entry);
   updateTotals();
   clearInputs();
@@ -81,15 +76,48 @@ function clearInputs() {
   document.getElementById('fat').value = '';
 }
 
-function handleCredentialResponse(response) {
-  const data = parseJwt(response.credential);
-  user = { name: data.name, email: data.email };
-  localStorage.setItem('user', JSON.stringify(user));
-  showApp();
+async function loadEntries() {
+  const res = await fetch(`/entries?userId=${user.id}`);
+  entries = await res.json();
+  const tbody = document.getElementById('food-body');
+  tbody.innerHTML = '';
+  entries.forEach(appendRow);
+  updateTotals();
+}
+
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const res = await fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await res.json();
+  if (res.ok) {
+    user = data;
+    localStorage.setItem('user', JSON.stringify(user));
+    await loadEntries();
+    showApp();
+    document.getElementById('message').textContent = '';
+  } else {
+    document.getElementById('message').textContent = data.error;
+  }
+}
+
+async function register() {
+  const email = document.getElementById('register-email').value.trim();
+  const password = document.getElementById('register-password').value;
+  const res = await fetch('/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await res.json();
+  document.getElementById('message').textContent = data.message || data.error;
 }
 
 function logout() {
-  google.accounts.id.disableAutoSelect();
   user = null;
   localStorage.removeItem('user');
   hideApp();
@@ -109,14 +137,3 @@ function hideApp() {
   document.getElementById('login-section').style.display = 'block';
 }
 
-function parseJwt(token) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split('')
-      .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-      .join('')
-  );
-  return JSON.parse(jsonPayload);
-}
